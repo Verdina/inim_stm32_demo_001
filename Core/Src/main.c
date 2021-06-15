@@ -106,6 +106,9 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	  if (!LL_GPIO_IsInputPinSet(USER_BUTTON_GPIO_Port, USER_BUTTON_Pin)) {
+		  LL_USART_TransmitData8(USART2, 'A');
+	  }
   }
   /* USER CODE END 3 */
 }
