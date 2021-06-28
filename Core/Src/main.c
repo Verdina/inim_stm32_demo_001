@@ -24,7 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "string.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,7 +55,17 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+const uint8_t __USED __attribute__((section(".flash2_sect1"))) var_in_flash2_sect1[8] = "123star";
+const uint8_t __USED __attribute__((section(".flash2_sect2"))) var_in_flash2_sect2[8] = "123star";
+const uint8_t __USED __attribute__((section(".flash2_sect3"))) var_in_flash2_sect3[8] = "123star";
+const uint8_t __USED __attribute__((section(".flash2_sect4"))) var_in_flash2_sect4[8] = "123star";
 
+__IO uint8_t __USED __attribute__((section(".ram2_sect1"))) var_in_ram2_sect1[8] = "ram_var";
+__IO uint8_t __USED __attribute__((section(".ram2_sect2"))) var_in_ram2_sect2[8] = "ram_var";
+__IO uint8_t __USED __attribute__((section(".ram2_sect3"))) var_in_ram2_sect3[8] = "ram_var";
+__IO uint8_t __USED __attribute__((section(".ram2_sect4"))) var_in_ram2_sect4[8] = "ram_var";
+
+volatile uint8_t cache[1024];
 /* USER CODE END 0 */
 
 /**
@@ -96,7 +106,18 @@ int main(void)
   MX_GPIO_Init();
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
+  memcpy((uint8_t*)&cache[0], (uint8_t*)&var_in_flash2_sect1[0], 8);
+  memcpy((uint8_t*)&cache[0], (uint8_t*)&var_in_flash2_sect2[0], 8);
+  memcpy((uint8_t*)&cache[0], (uint8_t*)&var_in_flash2_sect3[0], 8);
+  memcpy((uint8_t*)&cache[0], (uint8_t*)&var_in_flash2_sect4[0], 8);
 
+  memcpy((uint8_t*)&var_in_ram2_sect1[0], (uint8_t*)&var_in_flash2_sect1[0], 8);
+  memcpy((uint8_t*)&var_in_ram2_sect2[0], (uint8_t*)&var_in_flash2_sect2[0], 8);
+  memcpy((uint8_t*)&var_in_ram2_sect3[0], (uint8_t*)&var_in_flash2_sect3[0], 8);
+  memcpy((uint8_t*)&var_in_ram2_sect4[0], (uint8_t*)&var_in_flash2_sect4[0], 8);
+
+  memset((uint8_t*)&cache[0], 0xA5, 128);
+  memcpy((uint8_t*)&var_in_ram2_sect4[0], (uint8_t*)&cache[0], 8);
   /* USER CODE END 2 */
 
   /* Infinite loop */
